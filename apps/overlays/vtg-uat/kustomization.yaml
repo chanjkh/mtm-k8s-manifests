@@ -3,4 +3,4 @@ kind: Kustomization
 bases:
   - ../../base
 patches:
-  - redis-application-patch.yaml
+  - path: redis-application-patch.yaml
