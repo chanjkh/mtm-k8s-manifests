@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/chanjkh/mtm-k8s-manifests.git
-    targetRevision: main
+    targetRevision: HEAD
     path: apps/overlays/vtg-qa              # points to the App of Apps overlay
   destination:
     server: https://kubernetes.default.svc
