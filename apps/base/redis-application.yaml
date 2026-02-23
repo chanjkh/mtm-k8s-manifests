@@ -15,7 +15,7 @@ spec:
         releaseName: redis-operator
         values: |
           installCRDs: true                  # ensure CRDs are installed automatically
-    - repoURL: https://github.com/chanjkh/mtm-k8s-manifests.git
+    - repoURL: https://github.com/chanjkh/mtm-k8s-manifests
       targetRevision: HEAD
       path: PATH_PLACEHOLDER                 # patched per environment
       directory:
