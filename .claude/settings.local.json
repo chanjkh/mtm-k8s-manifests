@@ -6,7 +6,8 @@
       "WebFetch(domain:iits-consulting.de)",
       "WebFetch(domain:redis-operator.opstree.dev)",
       "WebFetch(domain:ot-container-kit.github.io)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:artifacthub.io)"
     ]
   }
 }

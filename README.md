@@ -1,3 +1,4 @@
+```
 # Install Redis Operator and Redis Sentinel (⚠️ Bitnami Redis is No Longer Free)
 helm repo add ot-helm https://ot-container-kit.github.io/helm-charts/
 helm repo update
@@ -24,3 +25,4 @@ kubectl delete -f redis-sentinel.yaml -n mtm-vtg-uat
 helm uninstall redis-operator -n mtm-vtg-uat
 kubectl delete secret redis-secret -n mtm-vtg-uat
 kubectl delete namespace mtm-vtg-uat
+```
