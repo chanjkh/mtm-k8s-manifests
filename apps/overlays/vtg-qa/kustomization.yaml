@@ -4,3 +4,6 @@ resources:
   - ../../base
 patches:
   - path: redis-application-patch.yaml
+    target:
+      kind: Application
+      name: redis-application
