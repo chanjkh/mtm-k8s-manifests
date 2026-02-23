@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.chainguard.dev)",
+      "WebFetch(domain:iits-consulting.de)",
+      "WebFetch(domain:redis-operator.opstree.dev)",
+      "WebFetch(domain:ot-container-kit.github.io)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}
