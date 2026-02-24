@@ -6,7 +6,7 @@ A small repo organizing Kustomize overlays, Argo CD application manifests, and a
 
 - `manifests/` — Base Kubernetes manifests and environment overlays (Kustomize).
 - `argocd/` — Project-level Argo CD YAML files.
-- `mtm-application-set.yaml` — Argo CD application set YAMLs. 
+- `mtm-application-set.yaml` — Argo CD application set YAMLs.
 
 ## Getting Started
 

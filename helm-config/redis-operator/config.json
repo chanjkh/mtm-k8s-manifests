@@ -1,8 +1,0 @@
-{
-    "helm": {
-      "repoUrl": "https://ot-container-kit.github.io/helm-charts/",
-      "chart": "redis-operator",
-      "targetRevision": "0.23.0",
-      "releaseName": "redis-operator"
-    }
-}

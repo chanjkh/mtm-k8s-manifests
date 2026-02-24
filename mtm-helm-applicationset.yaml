@@ -21,17 +21,17 @@ spec:
         - resources-finalizer.argocd.argoproj.io          # cascade delete managed resources on app removal
     spec:
       project: "{{app}}-{{env}}-project"
-      source:
-        repoURL: https://ot-container-kit.github.io/helm-charts/
-        chart: redis-operator
-        targetRevision: 0.23.0                            # pin to a specific version, avoid using "*" in production
-        helm:
-          releaseName: redis-operator
-          values: |
-            installCRDs: true                             # ensure CRDs are installed automatically
-            serviceAccountName: "{{app}}-{{env}}-redis-operator"
-            redisOperator:
-              name: "{{app}}-{{env}}-redis-operator"      # rename ClusterRole to support deploying multiple operators in one cluster
+      sources:
+        - repoURL: https://ot-container-kit.github.io/helm-charts/
+          chart: redis-operator
+          targetRevision: 0.23.0                            # pin to a specific version, avoid using "*" in production
+          helm:
+            releaseName: redis-operator
+            values: |
+              installCRDs: true                             # ensure CRDs are installed automatically
+              serviceAccountName: "{{app}}-{{env}}-redis-operator"
+              redisOperator:
+                name: "{{app}}-{{env}}-redis-operator"      # rename ClusterRole to support deploying multiple operators in one cluster
       destination:
         server: "{{server}}"
         namespace: "{{app}}-{{env}}"
