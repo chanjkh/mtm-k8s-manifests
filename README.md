@@ -4,10 +4,9 @@ A small repo organizing Kustomize overlays, Argo CD application manifests, and a
 
 ## Repository Structure
 
-- `apps/` — Argo CD application manifests and kustomizations.
 - `manifests/` — Base Kubernetes manifests and environment overlays (Kustomize).
-- `argocd/` — Project-level Argo CD YAML files for QA and UAT.
-- `*-application.yaml` — Top-level Argo CD application YAMLs (App-of-apps). 
+- `argocd/` — Project-level Argo CD YAML files.
+- `mtm-application-set.yaml` — Argo CD application set YAMLs. 
 
 ## Getting Started
 
@@ -31,18 +30,17 @@ kubectl create secret generic mtm2-redis-creds --from-literal=REDIS_PASSWORD='yo
 # Install applications to Argo CD
 kubectl.exe apply -f argocd\mtm-vtg-uat-project.yaml
 kubectl.exe apply -f argocd\mtm-vtg-qa-project.yaml
-kubectl.exe apply -f mtm-vtg-uat-application.yaml
-kubectl.exe apply -f mtm-vtg-qa-application.yaml
+kubectl.exe apply -f mtm-application-set.yaml
 
 # Uninstall applications from Argo CD
-kubectl.exe delete -f mtm-vtg-uat-application.yaml
-kubectl.exe delete -f mtm-vtg-qa-application.yaml
+kubectl.exe delete -f mtm-application-set.yaml
 ```
 
 ## References
 
 * https://artifacthub.io/packages/helm/ot-container-kit/redis-operator
 * https://github.com/OT-CONTAINER-KIT/redis-operator
+* https://github.com/OT-CONTAINER-KIT/redis-operator/issues/1503
 
 ## Install Redis Sentinel manually
 
