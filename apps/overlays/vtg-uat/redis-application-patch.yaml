@@ -25,3 +25,10 @@
   target:
     kind: Application
     name: redis-application
+
+- op: replace
+  path: /metadata/name
+  value: mtm-vtg-uat-redis-application
+  target:
+    kind: Application
+    name: redis-application
