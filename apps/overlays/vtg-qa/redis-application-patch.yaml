@@ -38,7 +38,8 @@
   value: |
     installCRDs: true
     serviceAccountName: "mtm-vtg-qa-redis-operator"
-    redisOperator.name: "mtm-vtg-qa-redis-operator"
+    redisOperator:
+      name: "mtm-vtg-qa-redis-operator"
   target:
     kind: Application
     name: redis-application

@@ -16,7 +16,8 @@ spec:
         values: |
           installCRDs: true                  # ensure CRDs are installed automatically
           serviceAccountName: "abc-redis-operator"
-          redisOperator.name: "abc-redis-operator"
+          redisOperator:
+            name: "abc-redis-operator"
     - repoURL: https://github.com/chanjkh/mtm-k8s-manifests
       targetRevision: HEAD
       path: PATH_PLACEHOLDER                 # patched per environment
