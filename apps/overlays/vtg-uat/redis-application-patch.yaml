@@ -1,5 +1,5 @@
 - op: replace
-  path: /spec/source/1/path
+  path: /spec/sources/1/path
   value: manifests/redis/overlays/vtg-uat
   target:
     kind: Application
