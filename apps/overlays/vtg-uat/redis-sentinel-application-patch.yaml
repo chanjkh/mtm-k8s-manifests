@@ -1,0 +1,20 @@
+- op: replace
+  path: /spec/source/path
+  value: manifests/redis/overlays/vtg-uat
+  target:
+    kind: Application
+    name: redis-sentinel-application
+
+- op: replace
+  path: /spec/destination/server
+  value: https://kubernetes.default.svc
+  target:
+    kind: Application
+    name: redis-sentinel-application
+
+- op: replace
+  path: /spec/destination/namespace
+  value: mtm-vtg-uat
+  target:
+    kind: Application
+    name: redis-sentinel-application
