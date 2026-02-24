@@ -32,3 +32,12 @@
   target:
     kind: Application
     name: redis-application
+
+- op: replace
+  path: /spec/sources/0/helm/values
+  value: |
+    installCRDs: true
+    fullnameOverride: "mtm-vtg-qa-redis-operator"
+  target:
+    kind: Application
+    name: redis-application
