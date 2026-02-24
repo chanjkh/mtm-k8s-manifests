@@ -3,11 +3,7 @@ kind: Kustomization
 resources:
   - ../../base
 patches:
-  - path: redis-operator-application-patch.yaml
+  - path: redis-application-patch.yaml
     target:
       kind: Application
-      name: redis-operator-application
-  - path: redis-sentinel-application-patch.yaml
-    target:
-      kind: Application
-      name: redis-sentinel-application
+      name: redis-application
