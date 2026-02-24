@@ -1,5 +1,5 @@
 {
-    "helm": {
+    "cluster": {
       "appName": "redis-operator",
       "repoUrl": "https://ot-container-kit.github.io/helm-charts/",
       "chart": "redis-operator",
