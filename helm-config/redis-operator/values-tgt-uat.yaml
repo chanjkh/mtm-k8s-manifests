@@ -1,0 +1,4 @@
+installCRDs: true                         # ensure CRDs are installed automatically
+redisOperator:
+  name: mtm-tgt-uat-redis-operator        # rename ClusterRole to support deploying multiple operators in one cluster
+serviceAccountName: mtm-tgt-uat-redis-operator

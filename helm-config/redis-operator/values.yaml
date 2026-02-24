@@ -1,4 +1,0 @@
-installCRDs: true                               # ensure CRDs are installed automatically
-serviceAccountName: "{{app}}-{{env}}-redis-operator"
-redisOperator:
-  name: "{{app}}-{{env}}-redis-operator"        # rename ClusterRole to support deploying multiple operators in one cluster
