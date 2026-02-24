@@ -1,10 +1,8 @@
 {
     "helm": {
-      "appName": "redis-operator",
       "repoUrl": "https://ot-container-kit.github.io/helm-charts/",
       "chart": "redis-operator",
       "targetRevision": "0.23.0",
-      "releaseName": "redis-operator",
-      "values": "installCRDs: true\nserviceAccountName: \"{{app}}-{{env}}-redis-operator\"\nredisOperator:\n  name: \"{{app}}-{{env}}-redis-operator\""
+      "releaseName": "redis-operator"
     }
 }
