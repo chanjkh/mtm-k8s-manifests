@@ -34,7 +34,7 @@
     name: redis-application
 
 - op: replace
-  path: /spec/sources/1/helm/values
+  path: /spec/sources/0/helm/values
   value: |
     installCRDs: true
     serviceAccountName: "mtm-vtg-uat-redis-operator"
