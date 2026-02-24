@@ -1,0 +1,4 @@
+installCRDs: true                         # ensure CRDs are installed automatically
+redisOperator:
+  name: abc-redis-operator        # rename ClusterRole to support deploying multiple operators in one cluster
+serviceAccountName: abc-redis-operator
