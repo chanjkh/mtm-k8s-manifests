@@ -21,7 +21,7 @@
 
 - op: replace
   path: /spec/project
-  value: mtm-vtg-qa
+  value: mtm-vtg-qa-project
   target:
     kind: Application
     name: redis-application

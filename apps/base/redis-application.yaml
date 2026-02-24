@@ -6,7 +6,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io # cascade delete managed resources on app removal
 spec:
-  project: default
+  project: PROJECT_PLACEHOLDER               # patched per environment
   sources:
     - repoURL: https://ot-container-kit.github.io/helm-charts/
       chart: redis-operator
