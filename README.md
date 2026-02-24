@@ -1,28 +1,19 @@
 ```
-# Install Redis Operator and Redis Sentinel (⚠️ Bitnami Redis is No Longer Free)
-helm repo add ot-helm https://ot-container-kit.github.io/helm-charts/
-helm repo update
-helm upgrade redis-operator ot-helm/redis-operator --install --create-namespace --namespace mtm-vtg-uat
+kubectl create namespace argocd
+kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Get password
+[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("$(kubectl.exe get secret -n argocd argocd-initial-admin-secret -o jsonpath='{.data.password}')"))
+
+# 
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+
+kubectl create namespace mtm-vtg-uat
+
 kubectl create secret generic mtm2-redis-creds --from-literal=REDIS_PASSWORD='your-password' --namespace mtm-vtg-uat
-kubectl apply -f redis-sentinel.yaml -n mtm-vtg-uat
 
-# You can verify the API Version of Redis Operator by running:
-kubectl api-versions
 
-# You can verify the Redis config by running:
-kubectl exec -it redis-sentinel-sentinel-0 -n mtm-vtg-uat -- redis-cli -p 26379 sentinel masters
-
-# If you need to forward sentinel port to localhost for testing:
-kubectl port-forward svc/redis-sentinel-sentinel 26379:26379 -n mtm-vtg-uat
-
-# If you want to test the Redis connection:
-kubectl apply -f redis-test-job.yaml -n mtm-vtg-uat
-kubectl logs job/redis-test -n mtm-vtg-uat
-kubectl delete -f redis-test-job.yaml -n mtm-vtg-uat
-
-# If you need to uninstall everythings:
-kubectl delete -f redis-sentinel.yaml -n mtm-vtg-uat
-helm uninstall redis-operator -n mtm-vtg-uat
-kubectl delete secret redis-secret -n mtm-vtg-uat
-kubectl delete namespace mtm-vtg-uat
+kubectl.exe apply -f mtm-vtg-uat-application.yaml
+kubectl.exe delete -f mtm-vtg-uat-application.yaml
 ```
