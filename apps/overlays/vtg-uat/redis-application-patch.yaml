@@ -18,3 +18,10 @@
   target:
     kind: Application
     name: redis-application
+
+- op: replace
+  path: /spec/project
+  value: mtm-vtg-uat
+  target:
+    kind: Application
+    name: redis-application
