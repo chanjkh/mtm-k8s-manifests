@@ -8,9 +8,9 @@ spec:
   sourceRepos:
   - '*'
   destinations:
-  - server: https://kubernetes.default.svc    # need update to correct server
+  - server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
     namespace: argocd
-  - server: https://kubernetes.default.svc    # need update to correct server
+  - server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
     namespace: mtm-vtg-qa
   clusterResourceWhitelist:
   - group: '*'

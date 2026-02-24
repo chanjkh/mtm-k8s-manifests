@@ -12,7 +12,7 @@ spec:
     targetRevision: HEAD
     path: apps/overlays/vtg-qa                # points to the App of Apps overlay
   destination:
-    server: https://kubernetes.default.svc    # need update to correct server
+    server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
     namespace: argocd
   syncPolicy:
     automated:
