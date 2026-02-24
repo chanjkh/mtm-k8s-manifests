@@ -1,0 +1,141 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-test-script
+data:
+  test_redis.py: |
+    import os
+    import sys
+    from redis.sentinel import Sentinel
+    from redis.exceptions import RedisError
+
+    # ── Configuration ────────────────────────────────────────────
+    SENTINEL_HOST = "redis-sentinel-sentinel"
+    SENTINEL_PORT = 26379
+    MASTER_NAME   = "mtm2-master"
+    PASSWORD      = os.environ.get("REDIS_PASSWORD")
+    # ─────────────────────────────────────────────────────────────
+
+    def get_sentinel():
+        return Sentinel(
+            [(SENTINEL_HOST, SENTINEL_PORT)],
+            socket_timeout=5,
+            password=PASSWORD,            # password for Redis master/replica
+            sentinel_kwargs={             # no password for Sentinel itself
+                "socket_timeout": 5,
+            },
+        )
+
+    def test_sentinel_connection(sentinel):
+        print("\n[1] Testing Sentinel connection...")
+        try:
+            masters = sentinel.discover_master(MASTER_NAME)
+            print(f"    ✅ Master discovered: {masters[0]}:{masters[1]}")
+        except Exception as e:
+            print(f"    ❌ Failed to discover master: {e}")
+            sys.exit(1)
+
+    def test_master_info(sentinel):
+        print("\n[2] Fetching master INFO...")
+        try:
+            master = sentinel.master_for(MASTER_NAME, socket_timeout=5)
+            info = master.info("replication")
+            print(f"    ✅ Role            : {info['role']}")
+            print(f"    ✅ Connected slaves: {info['connected_slaves']}")
+            for i in range(info["connected_slaves"]):
+                slave = info[f"slave{i}"]
+                print(f"       Replica {i}     : {slave['ip']}:{slave['port']} ({slave['state']})")
+        except RedisError as e:
+            print(f"    ❌ Error: {e}")
+            sys.exit(1)
+
+    def test_write(sentinel):
+        print("\n[3] Testing WRITE to master...")
+        try:
+            master = sentinel.master_for(MASTER_NAME, socket_timeout=5)
+            master.set("test:key", "hello-from-sentinel")
+            master.expire("test:key", 60)  # auto-expire in 60s
+            print("    ✅ SET test:key = 'hello-from-sentinel'")
+        except RedisError as e:
+            print(f"    ❌ Write failed: {e}")
+            sys.exit(1)
+
+    def test_read_from_master(sentinel):
+        print("\n[4] Testing READ from master...")
+        try:
+            master = sentinel.master_for(MASTER_NAME, socket_timeout=5)
+            value = master.get("test:key")
+            print(f"    ✅ GET test:key = '{value.decode()}'")
+        except RedisError as e:
+            print(f"    ❌ Read from master failed: {e}")
+
+    def test_read_from_replica(sentinel):
+        print("\n[5] Testing READ from replica...")
+        try:
+            replica = sentinel.slave_for(MASTER_NAME, socket_timeout=5)
+            value = replica.get("test:key")
+            print(f"    ✅ GET test:key (replica) = '{value.decode()}'")
+        except RedisError as e:
+            print(f"    ⚠️  Read from replica failed (may have no replicas): {e}")
+
+    def test_delete(sentinel):
+        print("\n[6] Cleaning up test key...")
+        try:
+            master = sentinel.master_for(MASTER_NAME, socket_timeout=5)
+            master.delete("test:key")
+            print("    ✅ DELETE test:key")
+        except RedisError as e:
+            print(f"    ❌ Delete failed: {e}")
+
+    def main():
+        print("=" * 50)
+        print("  Redis Sentinel Connection Test")
+        print("=" * 50)
+        print(f"  Sentinel : {SENTINEL_HOST}:{SENTINEL_PORT}")
+        print(f"  Master   : {MASTER_NAME}")
+
+        sentinel = get_sentinel()
+
+        test_sentinel_connection(sentinel)
+        test_master_info(sentinel)
+        test_write(sentinel)
+        test_read_from_master(sentinel)
+        test_read_from_replica(sentinel)
+        test_delete(sentinel)
+
+        print("\n" + "=" * 50)
+        print("  ✅ All tests passed!")
+        print("=" * 50)
+
+    if __name__ == "__main__":
+        main()
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: redis-test
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: redis-test
+          image: python:3.12-slim
+          command:
+            - sh
+            - -c
+            - pip install redis -q && python /script/test_redis.py
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mtm2-redis-creds
+                  key: REDIS_PASSWORD
+          volumeMounts:
+            - name: script
+              mountPath: /script
+      volumes:
+        - name: script
+          configMap:
+            name: redis-test-script

@@ -1,0 +1,23 @@
+apiVersion: redis.redis.opstreelabs.in/v1beta2
+kind: RedisReplication
+metadata:
+  name: redis-replication
+  namespace: mtm-vtg-uat
+spec:
+  clusterSize: 3
+  kubernetesConfig:
+    image: quay.io/opstree/redis:v8.4.0
+    imagePullPolicy: IfNotPresent
+    redisSecret:
+      name: mtm2-redis-creds
+      key: REDIS_PASSWORD
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 1Gi
+  podSecurityContext:
+    runAsUser: 1000
+    fsGroup: 1000
