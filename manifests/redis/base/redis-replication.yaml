@@ -2,7 +2,6 @@ apiVersion: redis.redis.opstreelabs.in/v1beta2
 kind: RedisReplication
 metadata:
   name: redis-replication
-  namespace: NAMESPACE_PLACEHOLDER            # patched per environment
 spec:
   clusterSize: 3
   kubernetesConfig:
