@@ -15,9 +15,9 @@ spec:
         releaseName: redis-operator
         values: |
           installCRDs: true                  # ensure CRDs are installed automatically
-          serviceAccountName: "abc-redis-operator"
+          serviceAccountName: "redis-operator"
           redisOperator:
-            name: "abc-redis-operator"
+            name: "redis-operator"           # change ClusterRole name for multiple deployment in one cluster
     - repoURL: https://github.com/chanjkh/mtm-k8s-manifests
       targetRevision: HEAD
       path: PATH_PLACEHOLDER                 # patched per environment
