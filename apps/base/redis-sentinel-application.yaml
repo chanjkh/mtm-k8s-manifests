@@ -11,8 +11,6 @@ spec:
     repoURL: https://github.com/chanjkh/mtm-k8s-manifests
     targetRevision: HEAD
     path: PATH_PLACEHOLDER                 # patched per environment
-    directory:
-      recurse: true
   destination:
     server: SERVER_PLACEHOLDER               # patched per environment
     namespace: NAMESPACE_PLACEHOLDER         # patched per environment
