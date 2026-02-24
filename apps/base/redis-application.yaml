@@ -12,11 +12,10 @@ spec:
       chart: redis-operator
       targetRevision: 0.23.0                 # pin to a specific version, avoid using "*" in production
       helm:
-        releaseName: abc-redis-operator
+        releaseName: redis-operator
         values: |
           installCRDs: true                  # ensure CRDs are installed automatically
-          fullnameOverride: "bcd-redis-operator"
-          nameOverride: "def-redis-operator"
+          serviceAccountName: "abc-redis-operator"
     - repoURL: https://github.com/chanjkh/mtm-k8s-manifests
       targetRevision: HEAD
       path: PATH_PLACEHOLDER                 # patched per environment
