@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/namespace
+  value: mtm-vtg-uat
+  target:
+    kind: RedisReplication
+    name: redis-replication
