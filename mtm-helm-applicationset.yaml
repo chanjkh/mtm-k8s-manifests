@@ -1,8 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: mtm-application-set
-  namespace: argocd                                       # always deploy Argo CD app sets into argocd namespace
+  name: mtm-helm-applicationset
+  namespace: argocd                                       # always deploy Argo CD appsets into argocd namespace
 spec:
   generators:
     - list:
@@ -15,26 +15,23 @@ spec:
             server: https://kubernetes.default.svc        # needs to be updated to correct k8s server
   template:
     metadata:
-      name: "{{app}}-{{env}}-redis-application"
+      name: "{{app}}-{{env}}-redis-operator-application"
       namespace: argocd                                   # always deploy Argo CD apps into argocd namespace
       finalizers:
         - resources-finalizer.argocd.argoproj.io          # cascade delete managed resources on app removal
     spec:
       project: "{{app}}-{{env}}-project"
-      sources:
-        - repoURL: https://ot-container-kit.github.io/helm-charts/
-          chart: redis-operator
-          targetRevision: 0.23.0                          # pin to a specific version, avoid using "*" in production
-          helm:
-            releaseName: redis-operator
-            values: |
-              installCRDs: true                           # ensure CRDs are installed automatically
-              serviceAccountName: "{{app}}-{{env}}-redis-operator"
-              redisOperator:
-                name: "{{app}}-{{env}}-redis-operator"    # rename ClusterRole to support deploying multiple operators in one cluster
-        - repoURL: https://github.com/chanjkh/mtm-k8s-manifests.git
-          targetRevision: HEAD
-          path: "manifests/redis/overlays/{{env}}"
+      source:
+        repoURL: https://ot-container-kit.github.io/helm-charts/
+        chart: redis-operator
+        targetRevision: 0.23.0                            # pin to a specific version, avoid using "*" in production
+        helm:
+          releaseName: redis-operator
+          values: |
+            installCRDs: true                             # ensure CRDs are installed automatically
+            serviceAccountName: "{{app}}-{{env}}-redis-operator"
+            redisOperator:
+              name: "{{app}}-{{env}}-redis-operator"      # rename ClusterRole to support deploying multiple operators in one cluster
       destination:
         server: "{{server}}"
         namespace: "{{app}}-{{env}}"
