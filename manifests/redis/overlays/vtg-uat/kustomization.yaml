@@ -3,18 +3,3 @@ kind: Kustomization
 namespace: mtm-vtg-uat
 resources:
   - ../../base
-patches:
-  - target:
-      kind: RedisSentinel
-      name: redis-sentinel
-    patch: |-
-      - op: replace
-        path: /metadata/namespace
-        value: mtm-vtg-uat
-  - target:
-      kind: RedisReplication
-      name: redis-replication
-    patch: |-
-      - op: replace
-        path: /metadata/namespace
-        value: mtm-vtg-uat
