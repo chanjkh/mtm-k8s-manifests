@@ -4,6 +4,3 @@ resources:
   - ../../base
 patches:
   - path: redis-sentinel-patch.yaml
-    target:
-      kind: RedisSentinel
-      name: redis-sentinel
