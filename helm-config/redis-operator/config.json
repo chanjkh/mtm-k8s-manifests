@@ -1,0 +1,14 @@
+{
+    "helm": {
+      "appName": "redis-operator",
+      "repoUrl": "https://ot-container-kit.github.io/helm-charts/",
+      "chart": "redis-operator",
+      "targetRevision": "0.23.0",
+      "releaseName": "redis-operator",
+      "values": "|
+            installCRDs: true                               # ensure CRDs are installed automatically
+            serviceAccountName: "{{app}}-{{env}}-redis-operator"
+            redisOperator:
+              name: "{{app}}-{{env}}-redis-operator"        # rename ClusterRole to support deploying multiple operators in one cluster"
+    }
+}
