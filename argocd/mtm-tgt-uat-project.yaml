@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: mtm-vtg-qa-project
+  name: mtm-tgt-uat-project
   namespace: argocd
 spec:
-  description: "Project for MTM VTG QA env"
+  description: "Project for MTM TGT UAT env"
   sourceRepos:
   - '*'
   destinations:
   - server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
     namespace: argocd
   - server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
-    namespace: mtm-vtg-qa
+    namespace: mtm-tgt-uat
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'

@@ -7,10 +7,10 @@ spec:
   generators:
     - list:
         elements:
-          - env: vtg-qa
+          - env: vtg-uat
             app: mtm
             server: https://kubernetes.default.svc        # needs to be updated to correct k8s server
-          - env: vtg-uat
+          - env: tgt-uat
             app: mtm
             server: https://kubernetes.default.svc        # needs to be updated to correct k8s server
   template:

@@ -23,13 +23,13 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 # Create the password for Redis
 kubectl create namespace mtm-vtg-uat
-kubectl create namespace mtm-vtg-qa
+kubectl create namespace mtm-tgt-uat
 kubectl create secret generic mtm2-redis-creds --from-literal=REDIS_PASSWORD='your-password' --namespace mtm-vtg-uat
-kubectl create secret generic mtm2-redis-creds --from-literal=REDIS_PASSWORD='your-password' --namespace mtm-vtg-qa
+kubectl create secret generic mtm2-redis-creds --from-literal=REDIS_PASSWORD='your-password' --namespace mtm-tgt-uat
 
 # Install applications to Argo CD
 kubectl.exe apply -f argocd\mtm-vtg-uat-project.yaml
-kubectl.exe apply -f argocd\mtm-vtg-qa-project.yaml
+kubectl.exe apply -f argocd\mtm-tgt-uat-project.yaml
 kubectl.exe apply -f mtm-application-set.yaml
 
 # Uninstall applications from Argo CD
