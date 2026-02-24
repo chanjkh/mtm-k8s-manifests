@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: mtm-vtg-uat
 resources:
   - ../../base
+  - redis-test-job.yaml
