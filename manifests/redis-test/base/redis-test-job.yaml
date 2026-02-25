@@ -125,7 +125,7 @@ spec:
           command:
             - sh
             - -c
-            - pip install redis -q && sleep 90 && python /script/test_redis.py
+            - pip install redis -q && sleep 60 && python /script/test_redis.py
           env:
             - name: REDIS_PASSWORD
               valueFrom:
