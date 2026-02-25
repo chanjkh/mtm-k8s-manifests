@@ -18,13 +18,13 @@ spec:
       name: "{{app}}-{{env}}-application"
       namespace: argocd
       finalizers:
-        - resources-finalizer.argocd.argoproj.io
+      - resources-finalizer.argocd.argoproj.io
     spec:
       project: "{{app}}-{{env}}-project"
       source:
         repoURL: https://github.com/chanjkh/mtm-k8s-manifests
         targetRevision: HEAD
-        path: "apps/overlays/{{env}}"             # points to the App of Apps overlay
+        path: apps                                # points to the App of Apps overlay
       destination:
         server: "{{server}}"
         namespace: argocd
@@ -33,4 +33,4 @@ spec:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
+        - CreateNamespace=true
