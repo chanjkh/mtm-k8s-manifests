@@ -21,7 +21,7 @@
 
 - op: replace
   path: /metadata/name
-  value: mtm-vtg-uat-redis-application
+  value: mtm-vtg-uat-redis-operator-application
   target:
     kind: Application
     name: redis-operator-application

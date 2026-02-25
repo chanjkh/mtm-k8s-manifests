@@ -15,7 +15,7 @@ spec:
         server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
   template:
     metadata:
-      name: "{{app}}-{{env}}-application"
+      name: "{{app}}-{{env}}-helm-application"
       namespace: argocd
       finalizers:
       - resources-finalizer.argocd.argoproj.io

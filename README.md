@@ -5,9 +5,10 @@ A small repo organizing Kustomize overlays, Argo CD application manifests, and a
 ## Repository Structure
 
 - `argocd/` — Project-level Argo CD YAMLs.
-- `mtm-applicationset.yaml` — Top-level Argo CD application set YAML (ApplicationSet). 
-- `apps/` — Argo CD application manifests and kustomizations (App-of-apps + Kustomize).
-- `manifests/` — Base Kubernetes manifests and environment overlays (Kustomize).
+- `apps/` — Base Kubernetes manifests and environment overlays (Kustomize).
+- `helms/` — Argo CD application manifests and kustomizations (App-of-apps + Kustomize).
+- `mtm-apps-applicationset.yaml` — Top-level Argo CD application set YAML for APP (ApplicationSet - all env x all app). 
+- `mtm-helms-applicationset.yaml` — Top-level Argo CD application set YAML for HELM (ApplicationSet - all env). 
 
 ## Getting Started
 
