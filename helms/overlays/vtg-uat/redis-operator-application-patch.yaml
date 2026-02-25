@@ -1,45 +1,38 @@
 - op: replace
-  path: /spec/sources/1/path
-  value: manifests/redis/overlays/tgt-uat
-  target:
-    kind: Application
-    name: redis-application
-
-- op: replace
   path: /spec/destination/server
   value: https://kubernetes.default.svc    # needs to be updated to correct k8s server
   target:
     kind: Application
-    name: redis-application
+    name: redis-operator-application
 
 - op: replace
   path: /spec/destination/namespace
-  value: mtm-tgt-uat
+  value: mtm-vtg-uat
   target:
     kind: Application
-    name: redis-application
+    name: redis-operator-application
 
 - op: replace
   path: /spec/project
-  value: mtm-tgt-uat-project
+  value: mtm-vtg-uat-project
   target:
     kind: Application
-    name: redis-application
+    name: redis-operator-application
 
 - op: replace
   path: /metadata/name
-  value: mtm-tgt-uat-redis-application
+  value: mtm-vtg-uat-redis-application
   target:
     kind: Application
-    name: redis-application
+    name: redis-operator-application
 
 - op: replace
   path: /spec/sources/0/helm/values
   value: |
     installCRDs: true
-    serviceAccountName: "mtm-tgt-uat-redis-operator"
+    serviceAccountName: "mtm-vtg-uat-redis-operator"
     redisOperator:
-      name: "mtm-tgt-uat-redis-operator"
+      name: "mtm-vtg-uat-redis-operator"
   target:
     kind: Application
-    name: redis-application
+    name: redis-operator-application
