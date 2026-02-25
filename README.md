@@ -42,7 +42,7 @@ kubectl.exe delete -f mtm-helm-applicationset.yaml
 
 ## Install Redis Sentinel manually
 
-If you want to install Redis Operator and Redis Sentinel manually.
+If you want to install Redis Operator and Redis Sentinel manually. These are the required steps. Only do that when you need to troubleshoot.
 ```
 # Install Redis Operator and Redis Sentinel (⚠️ Bitnami Redis is No Longer Free)
 helm repo add ot-helm https://ot-container-kit.github.io/helm-charts/
