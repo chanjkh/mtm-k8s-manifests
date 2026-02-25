@@ -40,12 +40,6 @@ kubectl.exe delete -f mtm-app-applicationset.yaml
 kubectl.exe delete -f mtm-helm-applicationset.yaml
 ```
 
-## References
-
-* https://artifacthub.io/packages/helm/ot-container-kit/redis-operator
-* https://github.com/OT-CONTAINER-KIT/redis-operator
-* https://github.com/OT-CONTAINER-KIT/redis-operator/issues/1503
-
 ## Install Redis Sentinel manually
 
 If you want to install Redis Operator and Redis Sentinel manually.
@@ -77,3 +71,31 @@ helm uninstall redis-operator -n mtm-vtg-uat
 kubectl delete secret redis-secret -n mtm-vtg-uat
 kubectl delete namespace mtm-vtg-uat
 ```
+
+## How to Change Reconciliation Time of Argo CD
+
+Argo CD defaults to a 180-second (3-minute) interval to reconcile the desired Git state with the live cluster state. This polling frequency can be adjusted or disabled (set to 0) by updating the timeout.reconciliation key in the argocd-cm ConfigMap.
+
+1. Edit ConfigMap
+```
+180s to 60s example
+kubectl edit cm argocd-cm -n argocd -o yaml
+```
+2. Update Value: Add or modify timeout.reconciliation: 60s under the data: field (180s to 60s example)
+```
+apiVersion: v1
+data:
+  timeout.reconciliation: 60s
+  timeout.reconciliation.jitter: 0s
+```
+3. Restart Controller
+```
+kubectl rollout restart deployment argocd-repo-server -n argocd
+kubectl rollout restart statefulset argocd-application-controller -n argocd
+```
+
+## References
+
+* https://artifacthub.io/packages/helm/ot-container-kit/redis-operator
+* https://github.com/OT-CONTAINER-KIT/redis-operator
+* https://github.com/OT-CONTAINER-KIT/redis-operator/issues/1503
