@@ -24,7 +24,7 @@ spec:
       source:
         repoURL: https://github.com/chanjkh/mtm-k8s-manifests
         targetRevision: HEAD
-        path: apps                                # points to the App of Apps overlay
+        path: "apps/overlays/{{env}}"             # points to the App of Apps overlay
       destination:
         server: "{{server}}"
         namespace: argocd
