@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: mtm-applicationset
+  namespace: argocd                               # always deploy Argo CD appsets into argocd namespace
+spec:
+  generators:
+  - list:
+      elements:
+      - env: vtg-uat
+        app: mtm
+        server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
+      - env: tgt-uat
+        app: mtm
+        server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
+  template:
+    metadata:
+      name: "{{app}}-{{env}}-application"
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: "{{app}}-{{env}}-project"
+      source:
+        repoURL: https://github.com/chanjkh/mtm-k8s-manifests
+        targetRevision: HEAD
+        path: "apps/overlays/{{env}}"             # points to the App of Apps overlay
+      destination:
+        server: "{{server}}"
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

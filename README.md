@@ -4,9 +4,10 @@ A small repo organizing Kustomize overlays, Argo CD application manifests, and a
 
 ## Repository Structure
 
+- `apps/` — Argo CD application manifests and kustomizations.
 - `manifests/` — Base Kubernetes manifests and environment overlays (Kustomize).
-- `argocd/` — Project-level Argo CD YAML files.
-- `mtm-application-set.yaml` — Argo CD application set YAMLs.
+- `argocd/` — Project-level Argo CD YAML.
+- `mtm-applicationset.yaml` — Top-level Argo CD application YAMLs (App-of-apps). 
 
 ## Getting Started
 
@@ -30,12 +31,10 @@ kubectl create secret generic mtm2-redis-creds --from-literal=REDIS_PASSWORD='yo
 # Install applications to Argo CD
 kubectl.exe apply -f argocd\mtm-vtg-uat-project.yaml
 kubectl.exe apply -f argocd\mtm-tgt-uat-project.yaml
-kubectl.exe apply -f mtm-helm-applicationset.yaml
-kubectl.exe apply -f mtm-app-applicationset.yaml
+kubectl.exe apply -f mtm-applicationset.yaml
 
 # Uninstall applications from Argo CD
-kubectl.exe delete -f mtm-app-applicationset.yaml
-kubectl.exe delete -f mtm-helm-applicationset.yaml
+kubectl.exe delete -f mtm-applicationset.yaml
 ```
 
 ## References
