@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: mtm-applicationset
+  name: mtm-helm-applicationset
   namespace: argocd                               # always deploy Argo CD appsets into argocd namespace
 spec:
   generators:
