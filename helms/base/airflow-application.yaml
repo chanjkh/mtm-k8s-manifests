@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airflow-application
+  namespace: argocd                          # always deploy Argo CD apps into argocd namespace
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io   # cascade delete managed resources on app removal
+spec:
+  project: PROJECT_PLACEHOLDER               # patched per environment
+  sources:
+  - repoURL: https://airflow.apache.org
+    chart: apache-airflow/airflow
+    targetRevision: latest                   # pin to a specific version, avoid using "*" in production
+    helm:
+      releaseName: apache-airflow/airflow
+  destination:
+    server: SERVER_PLACEHOLDER               # patched per environment
+    namespace: NAMESPACE_PLACEHOLDER         # patched per environment
+  syncPolicy:
+    automated:
+      prune: true                            # delete resources removed from Git
+      selfHeal: true                         # auto-revert manual changes in the cluster
+    syncOptions:
+    - CreateNamespace=true                   # create namespace if not exists
+    - ServerSideApply=true                   # required for applying large CRDs without annotation size limit issues
+    - RespectIgnoreDifferences=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 1m
+  ignoreDifferences:
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    jsonPointers:
+    - /spec/preserveUnknownFields            # ignore CRD fields managed by the operator itself

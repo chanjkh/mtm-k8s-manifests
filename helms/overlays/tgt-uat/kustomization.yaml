@@ -7,3 +7,7 @@ patches:
     target:
       kind: Application
       name: redis-operator-application
+  - path: airflow-application-patch.yaml
+    target:
+      kind: Application
+      name: airflow-application
