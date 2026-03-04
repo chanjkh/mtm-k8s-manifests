@@ -10,7 +10,7 @@ spec:
   sources:
   - repoURL: https://airflow.apache.org
     chart: airflow
-    targetRevision: 1.15.0                   # pin to a specific version, avoid using "*" in production
+    targetRevision: 1.19.0                   # pin to a specific version, avoid using "*" in production
     helm:
       releaseName: airflow
   destination:
