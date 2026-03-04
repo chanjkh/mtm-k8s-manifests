@@ -5,26 +5,36 @@ metadata:
   namespace: argocd                                         # always deploy Argo CD appsets into argocd namespace
 spec:
   generators:
-    - git:
-        repoURL: https://github.com/chanjkh/mtm-k8s-manifests.git
-        revision: HEAD
-        directories:
-          - path: apps/*/overlays/*              # only create Applications for overlays that exist in Git
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/chanjkh/mtm-k8s-manifests.git
+              revision: HEAD
+              directories:
+                - path: apps/*                         # auto-discover every app directory
+          - list:
+              elements:
+                - env: vtg-uat
+                  app: mtm
+                  server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
+                - env: tgt-uat
+                  app: mtm
+                  server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
   template:
     metadata:
-      name: "mtm-{{path.basename}}-{{path[1]}}-application"
+      name: "{{app}}-{{env}}-{{path.basename}}-application"
       namespace: argocd
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
-      project: "mtm-{{path.basename}}-project"
+      project: "{{app}}-{{env}}-project"
       source:
         repoURL: https://github.com/chanjkh/mtm-k8s-manifests.git
         targetRevision: HEAD
-        path: "{{path}}"
+        path: "{{path}}/overlays/{{env}}"
       destination:
-        server: https://kubernetes.default.svc    # needs to be updated to correct k8s server
-        namespace: "mtm-{{path.basename}}"
+        server: "{{server}}"
+        namespace: "{{app}}-{{env}}"
       syncPolicy:
         automated:
           prune: true                                       # delete resources removed from Git
