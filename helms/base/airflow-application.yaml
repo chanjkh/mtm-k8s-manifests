@@ -14,12 +14,14 @@ spec:
     helm:
       releaseName: airflow
       values: |                              # patched per environment
-        createUserJob:
+        createUserJob:                       # required for Argo CD
           useHelmHooks: false
           applyCustomEnv: false
         migrateDatabaseJob:
           useHelmHooks: false
           applyCustomEnv: false
+          jobAnnotations:
+            "argocd.argoproj.io/hook": Sync  # run database migrations every time there is a Sync event in Argo CD
   destination:
     server: SERVER_PLACEHOLDER               # patched per environment
     namespace: NAMESPACE_PLACEHOLDER         # patched per environment
