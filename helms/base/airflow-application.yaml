@@ -9,10 +9,10 @@ spec:
   project: PROJECT_PLACEHOLDER               # patched per environment
   sources:
   - repoURL: https://airflow.apache.org
-    chart: apache-airflow/airflow
-    targetRevision: latest                   # pin to a specific version, avoid using "*" in production
+    chart: airflow
+    targetRevision: 1.15.0                   # pin to a specific version, avoid using "*" in production
     helm:
-      releaseName: apache-airflow/airflow
+      releaseName: airflow
   destination:
     server: SERVER_PLACEHOLDER               # patched per environment
     namespace: NAMESPACE_PLACEHOLDER         # patched per environment
