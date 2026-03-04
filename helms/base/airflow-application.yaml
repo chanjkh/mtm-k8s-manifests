@@ -13,6 +13,13 @@ spec:
     targetRevision: 1.19.0                   # pin to a specific version, avoid using "*" in production
     helm:
       releaseName: airflow
+      values: |                              # patched per environment
+        createUserJob:
+          useHelmHooks: false
+          applyCustomEnv: false
+        migrateDatabaseJob:
+          useHelmHooks: false
+          applyCustomEnv: false
   destination:
     server: SERVER_PLACEHOLDER               # patched per environment
     namespace: NAMESPACE_PLACEHOLDER         # patched per environment
