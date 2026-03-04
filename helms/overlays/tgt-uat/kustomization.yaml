@@ -7,3 +7,12 @@ patches:
     target:
       kind: Application
       name: redis-operator-application
+  - patch: |-
+      $patch: delete
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: airflow-application
+    target:
+      kind: Application
+      name: airflow-application
