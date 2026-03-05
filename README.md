@@ -40,6 +40,101 @@ kubectl.exe delete -f mtm-app-applicationset.yaml
 kubectl.exe delete -f mtm-helm-applicationset.yaml
 ```
 
+## How to Deploy a New App
+
+### Helm-based App (via `helms/`)
+
+Use this approach when deploying a third-party Helm chart (e.g., Redis Operator, Airflow) through Argo CD.
+
+1. **Create a base Argo CD Application manifest** in `helms/base/`:
+   ```
+   helms/base/<app-name>-application.yaml
+   ```
+   Use placeholders (`PROJECT_PLACEHOLDER`, `SERVER_PLACEHOLDER`, `NAMESPACE_PLACEHOLDER`) for environment-specific values. See `helms/base/redis-operator-application.yaml` for reference.
+
+2. **Register the new resource** in `helms/base/kustomization.yaml`:
+   ```yaml
+   resources:
+     - <app-name>-application.yaml
+   ```
+
+3. **Create a patch file for each environment overlay** (e.g., `vtg-uat`, `tgt-uat`):
+   ```
+   helms/overlays/<env>/<app-name>-application-patch.yaml
+   ```
+   The patch should replace the placeholders with actual values (project, server, namespace, helm values). See `helms/overlays/vtg-uat/redis-operator-application-patch.yaml` for reference.
+
+4. **Register the patch** in each overlay's `helms/overlays/<env>/kustomization.yaml`:
+   ```yaml
+   patches:
+     - path: <app-name>-application-patch.yaml
+       target:
+         kind: Application
+         name: <app-name>-application
+   ```
+
+5. **Commit and push.** The existing `mtm-helm-applicationset.yaml` will automatically pick up the changes for all environments.
+
+### Non-Helm App (via `apps/`)
+
+Use this approach for plain Kubernetes manifests (e.g., Redis Sentinel CRs, Jobs) managed by Kustomize.
+
+1. **Create the base manifests** in a new directory under `apps/`:
+   ```
+   apps/<app-name>/base/
+   ```
+   Add your Kubernetes YAML files and a `kustomization.yaml` that lists them as resources.
+
+2. **Create an overlay for each environment** (e.g., `vtg-uat`, `tgt-uat`):
+   ```
+   apps/<app-name>/overlays/<env>/kustomization.yaml
+   ```
+   At minimum, set the namespace and reference the base:
+   ```yaml
+   apiVersion: kustomize.config.k8s.io/v1beta1
+   kind: Kustomization
+   namespace: mtm-<env>
+   resources:
+     - ../../base
+   ```
+   Add patches here if you need environment-specific overrides.
+
+3. **Commit and push.** The existing `mtm-app-applicationset.yaml` auto-discovers any new directory under `apps/*` and generates an Argo CD Application for every environment listed in its generator.
+
+## How to Skip Deploying an App to a Specific Environment
+
+### Helm-based App
+
+To skip a helm app (e.g., `airflow`) for a specific environment (e.g., `tgt-uat`), add a delete patch in that environment's overlay to remove the resource inherited from the base.
+
+1. **Create a delete patch file** at `helms/overlays/<env>/<app-name>-application-delete.yaml`:
+   ```yaml
+   apiVersion: argoproj.io/v1alpha1
+   kind: Application
+   metadata:
+     name: <app-name>-application
+   $patch: delete
+   ```
+
+2. **Register the delete patch** in `helms/overlays/<env>/kustomization.yaml`:
+   ```yaml
+   patches:
+     - path: <app-name>-application-delete.yaml
+   ```
+   And remove the corresponding regular patch entry for that app if it exists.
+
+### Non-Helm App
+
+The `mtm-app-applicationset.yaml` generates an Application for every combination of `apps/*` directory and environment. To skip an app for a specific environment, create an empty overlay so the generated Application deploys nothing.
+
+1. **Create an empty overlay** at `apps/<app-name>/overlays/<env>/kustomization.yaml`:
+   ```yaml
+   apiVersion: kustomize.config.k8s.io/v1beta1
+   kind: Kustomization
+   # intentionally empty — skip this app for this environment
+   ```
+   Do **not** include `../../base` in the resources list. This ensures the Application exists in Argo CD (avoiding sync errors) but deploys no resources.
+
 ## Install Redis Sentinel manually
 
 If you need to install the Redis Operator and Redis Sentinel manually, please follow the steps below. This should only be done for troubleshooting purposes.
